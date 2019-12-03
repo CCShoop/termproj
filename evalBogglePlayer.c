@@ -131,13 +131,18 @@ int main (int argc, char* argv[]) {
         printf("*** getWords() exceeded 3 minutes ***\n");
         exit(-1);
     }
+    if (totalElapsedTime <= 0) // too small to measure, unlikely
+       totalElapsedTime = 1.0 / CLOCKS_PER_SEC;
+    if (memory <= 0) // too small to measure, highly unlikely
+       memory = 1;
+
 
     // Calculate points for the words found
     int total_points = calculate_points(guessedWords, board);
 
     // Output performance metrics
     printf("Points: %d\n", total_points);
-    printf("Time in seconds: %.4lf\n", totalElapsedTime);
+    printf("Time in seconds: %.4e\n", totalElapsedTime);
     printf("Used memory in bytes: %d\n", memory);
     printf("Overall performance: %.4lf\n",
                (total_points * total_points) / sqrt(totalElapsedTime * memory));
